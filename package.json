@@ -1,0 +1,11 @@
+{
+  "name": "onekb",
+  "version": "1.0.0",
+  "description": "Collection of min-projects whose total size is less than 1 kB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rokala",
+  "license": "ISC"
+}
