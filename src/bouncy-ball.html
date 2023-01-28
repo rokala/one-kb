@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bouncy ball &#60; 1 kB</title>
+<style>
+    * {margin:0;padding:0;box-sizing:border-box;overflow:hidden}
+    body {min-height:100vh}
+</style>
+</head>
+<body>
+    <canvas id="c"></canvas>
+    <script>
+        let z = window,
+            f = z.requestAnimationFrame,
+            c=document.getElementById('c'),
+            x=c.getContext('2d'),
+            e=(min,max)=> Math.random() * (max-min) + min,
+            k=()=>255*Math.random(),
+            b=()=>{x.fillStyle=`rgb(${k()},${k()},${k()})`},
+            o=2*Math.PI,
+            init=()=>{
+                w = z.innerWidth;
+                h = z.innerHeight;
+                u = Math.min(w,h);
+                r = .07*u;
+                l = w-r;
+                t = h-r;
+                s = .3*Math.sqrt(u);
+                c.width=w;
+                c.height=h;
+                b()
+            },
+            h,w,u,r,l,t,s;
+            init();
+            let p = [e(r,l), e(r,t)],
+                n = e(0, o),
+                d = [s*Math.cos(n), s*Math.sin(n)],
+                q = () => {
+                    x.clearRect(0, 0, c.width, c.height);
+                    x.beginPath();
+                    x.arc(...p, r, 0, o);
+                    p = p.map((c, idx) => c + d[idx]);
+                    if (p[0] < r || p[0] > l) {
+                        d[0] = -d[0];
+                        b()
+                    }
+                    if (p[1] < r || p[1] > t) {
+                        d[1] = -d[1];
+                        b()
+                    }
+                    x.fill();
+                    f(q);
+                };
+        f(q);
+        z.onresize=init;
+    </script> 
+</body>
+</html>
