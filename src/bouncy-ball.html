@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Bouncy ball &#60; 1 kB</title>
 <style>
     * {margin:0;padding:0;box-sizing:border-box;overflow:hidden}
     body {min-height:100vh}
@@ -27,10 +28,10 @@
                 s = .3*Math.sqrt(u);
                 c.width=w;
                 c.height=h;
-                x.fillStyle = '#337';
             },
             h,w,u,r,l,t,s;
             init();
+            b();
             let p = [e(r,l), e(r,t)],
                 n = e(0, o),
                 d = [s*Math.cos(n), s*Math.sin(n)],
