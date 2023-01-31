@@ -4,7 +4,7 @@
 <title>Bouncy ball &#60; 1 kB</title>
 <style>
     * {margin:0;padding:0;box-sizing:border-box;overflow:hidden}
-    body {min-height:100vh}
+    body {min-height:100vh;background-color:#202124}
 </style>
 </head>
 <body>
@@ -15,47 +15,52 @@
             c = document.getElementById('c'),
             x = c.getContext('2d'),
             e = (min,max) => Math.random() * (max-min) + min,
-            k= () => 255*Math.random(),
-            b= () => { x.fillStyle=`rgb(${k()},${k()},${k()})` },
+            k = () => 255*Math.random(),
+            b = () => { g = `rgb(${k()},${k()},${k()})`; x.fillStyle = g },
             a = (num, min, max) => Math.min(Math.max(num, min), max),
-            o=2*Math.PI,
+            o = 2*Math.PI,
             n = e(0, o),
-            init=()=>{
+            // Direction
+            d = [Math.cos(n), Math.sin(n)],
+            // Initialize and on resize
+            init = () => {
                 w = z.innerWidth;
                 h = z.innerHeight;
                 c.width = w;
                 c.height = h;
                 u = Math.min(w,h);
-                r = .07*u;
+                r = u/15;
                 l = w-r;
                 t = h-r;
-                s = u/40;
-                d = [s*Math.cos(n), s*Math.sin(n)];
+                s = (w+h)/140;
+                x.fillStyle = g
             },
-        h,w,u,r,l,t,s,d;
+            // Detects and handles collisions
+            y = (i,s) => {
+                if (p[i] < r || p[i] > s) {
+                    d[i] = -d[i];
+                    p[i] = a(p[i], r, s);
+                    b()
+                }
+            },
+        h,w,u,r,l,t,s,g;
         init();
         b();
         let p = [e(r,l), e(r,t)],
             q = () => {
+                // Draw ball
                 x.clearRect(0, 0, w, h);
                 x.beginPath();
                 x.arc(...p, r, 0, o);
-                p = p.map((c, idx) => c + d[idx]);
                 x.fill();
-                if (p[0] < r || p[0] > l) {
-                    d[0] = -d[0];
-                    p[0] = a(p[0], r, l);
-                    b()
-                }
-                if (p[1] < r || p[1] > t) {
-                    d[1] = -d[1];
-                    p[1] = a(p[1], r, t);
-                    b()
-                }
-                f(q);
+                p = p.map((c, idx) => c + s*d[idx]);
+                y(0,l);
+                y(1,t);
+                f(q)
             };
         f(q);
-        z.onresize=init;
+        z.onresize = init
+        z.onclick = () => { d = [-d[1], -d[0]] }
     </script> 
 </body>
 </html>
