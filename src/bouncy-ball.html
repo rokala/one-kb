@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Bouncy ball &#60; 1 kB</title>
+<title>Bing &#60; 1 kB</title>
 <style>
     * {margin:0;padding:0;overflow:hidden}
     body {min-height:100vh;background:#202124}
@@ -11,40 +11,55 @@
     <canvas id="c"></canvas>
     <script>
         let z = window,
+            m = new AudioContext(),
+            j = () => {
+                let o = m.createOscillator(),
+                    g = m.createGain();
+                //o.type = 'triangle';
+                o.connect(g);
+                o.frequency.value = v()*1640;
+                g.connect(m.destination);
+                o.start(0);
+                g.gain.exponentialRampToValueAtTime(1e-4, m.currentTime+1)
+            },
+            _=Math,
+            v = () => _.random(),
             f = z.requestAnimationFrame,
             c = document.getElementById('c'),
             x = c.getContext('2d'),
-            e = (min,max) => Math.random() * (max-min) + min,
-            k = () => 255*Math.random(),
+            e = (min,max) => v() * (max-min) + min,
+            k = () => 255*v(),
             b = () => { g = `rgb(${k()},${k()},${k()})`; x.fillStyle = g },
-            a = (num, min, max) => Math.min(Math.max(num, min), max),
-            o = 2*Math.PI,
+            o = 2*_.PI,
             n = e(0, o),
             // Direction
-            d = [Math.cos(n), Math.sin(n)],
+            d = [_.cos(n), _.sin(n)],
             // Initialize and on resize
-            init = () => {
+            i = () => {
                 w = z.innerWidth;
                 h = z.innerHeight;
                 c.width = w;
                 c.height = h;
-                u = Math.min(w,h);
-                r = u/15;
+                r = _.min(w,h)/15;
                 l = w-r;
                 t = h-r;
-                s = (w+h)/140;
+                s = (w+h)/99;
                 x.fillStyle = g
             },
             // Detects and handles collisions
             y = (i,s) => {
                 if (p[i] < r || p[i] > s) {
+                    console.log(m.state);
+                    ///*m.state[0]==='r' &&*/ 
+                    j();
                     d[i] = -d[i];
-                    p[i] = a(p[i], r, s);
+                    // Clamp
+                    p[i] = _.min(_.max(p[i],r),s)
                     b()
                 }
             },
-        h,w,u,r,l,t,s,g;
-        init();
+            w,h,r,l,t,s,g;
+        i();
         b();
         let p = [e(r,l), e(r,t)],
             q = () => {
@@ -59,8 +74,8 @@
                 f(q)
             };
         f(q);
-        z.onresize = init
-        z.onclick = () => { d = [-d[1], -d[0]] }
+        z.onresize = i
+        //z.onclick = () => { d = [-d[1], -d[0]] }
     </script> 
 </body>
 </html>
