@@ -17,19 +17,19 @@
                     g = m.createGain();
                 //o.type = 'triangle';
                 o.connect(g);
-                o.frequency.value = v()*1640;
+                o.frequency.value = v(1640);
                 g.connect(m.destination);
+                //if(m.state[0] !== 'r') return;
                 o.start(0);
                 g.gain.exponentialRampToValueAtTime(1e-4, m.currentTime+1)
             },
             _=Math,
-            v = () => _.random(),
+            v = (m) => m*_.random(),
             f = z.requestAnimationFrame,
             c = document.getElementById('c'),
             x = c.getContext('2d'),
-            e = (min,max) => v() * (max-min) + min,
-            k = () => 255*v(),
-            b = () => { g = `rgb(${k()},${k()},${k()})`; x.fillStyle = g },
+            e = (min,max) => v(max-min) + min,
+            b = () => { g = `hsl(${v(360)},50%,50%)`; x.fillStyle = g },
             o = 2*_.PI,
             n = e(0, o),
             // Direction
