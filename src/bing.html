@@ -3,11 +3,12 @@
 <head>
 <title>Bing &#60; 1 kB</title>
 <style>
-    * {margin:0;padding:0;overflow:hidden}
+    * {margin:0;overflow:hidden}
     body {min-height:100vh;background:#202124}
 </style>
 </head>
 <body>
+    <h1 id="h">🔊/🔇</h1>
     <canvas id="c"></canvas>
     <script>
         let z = window,
@@ -17,16 +18,17 @@
                     g = m.createGain();
                 //o.type = 'triangle';
                 o.connect(g);
-                o.frequency.value = v(1640);
+                o.frequency.value = v(999);
                 g.connect(m.destination);
                 //if(m.state[0] !== 'r') return;
                 o.start(0);
-                g.gain.exponentialRampToValueAtTime(1e-4, m.currentTime+1)
+                g.gain.exponentialRampToValueAtTime(1e-4, m.currentTime+.2)
             },
             _=Math,
             v = (m) => m*_.random(),
             f = z.requestAnimationFrame,
-            c = document.getElementById('c'),
+            $ = (i) => document.getElementById(i),
+            c = $('c'),
             x = c.getContext('2d'),
             e = (min,max) => v(max-min) + min,
             b = () => { g = `hsl(${v(360)},50%,50%)`; x.fillStyle = g },
@@ -50,14 +52,14 @@
             y = (i,s) => {
                 if (p[i] < r || p[i] > s) {
                     ///*m.state[0]==='r' &&*/ 
-                    j();
+                    k && j();
                     d[i] = -d[i];
                     // Clamp
                     p[i] = _.min(_.max(p[i],r),s)
                     b()
                 }
             },
-            w,h,r,l,t,s,g;
+            w,h,r,l,t,s,g,k;
         i();
         b();
         let p = [e(r,l), e(r,t)],
@@ -73,7 +75,8 @@
                 f(q)
             };
         f(q);
-        z.onresize = i
+        z.onresize = i;
+        $('h').onclick = () => { k = !k }
         //z.onclick = () => { d = [-d[1], -d[0]] }
     </script> 
 </body>
